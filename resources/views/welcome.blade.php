@@ -45,17 +45,13 @@
                                         <div class="col-2">
                                             <div class="container">
                                                 <div>
-                                                    
                                                         <a class="postUp postUp{{$post->id}}" javascript(0) ><li class="fa fa-caret-up fa-2x block"></li></a>
-                                                    
                                                 </div>
                                                 <div>
                                                     <span class="block postCommentCount">{{count($post->thumbs->where('up_down', 'up'))-count($post->thumbs->where('up_down', 'down'))}}</span>
                                                 </div>
                                                 <div>
-                                                    
                                                         <a class="postDown postDown{{$post->id}}" javascript(0)  ><li class="fa fa-caret-down fa-2x block"></li></a>
-                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -231,6 +227,7 @@
                 ajaxCall(this);
             });
         } 
+        
         function ajaxCall(e){
            
             var commentElem = $(e).next();

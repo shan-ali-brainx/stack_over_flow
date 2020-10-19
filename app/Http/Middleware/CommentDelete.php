@@ -23,7 +23,5 @@ class CommentDelete
             return $next($request);
         }
         return redirect()->route('dashboard');
-        
-        return $next($request);
     }
 }
