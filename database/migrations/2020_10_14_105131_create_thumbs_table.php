@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostThumbsTable extends Migration
+class CreateThumbsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,22 @@ class CreatePostThumbsTable extends Migration
      */
     public function up()
     {
-        Schema::create('post_thumbs', function (Blueprint $table) {
+        Schema::create('thumbs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('post_id');
+            $table->integer('type');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('post_id')->nullable();
+            $table->unsignedBigInteger('comment_id')->nullable();
             $table->timestamps();
 
             $table->foreign('post_id')
                 ->references('id')
                 ->on('posts')
+                ->onDelete('cascade');
+
+            $table->foreign('comment_id')
+                ->references('id')
+                ->on('comments')
                 ->onDelete('cascade');
 
             $table->foreign('user_id')
@@ -38,6 +45,6 @@ class CreatePostThumbsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_thumbs_up');
+        Schema::dropIfExists('thumbs');
     }
 }

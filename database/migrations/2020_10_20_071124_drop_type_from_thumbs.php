@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPostIdToCommentThumbTable extends Migration
+class DropTypeFromThumbs extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddPostIdToCommentThumbTable extends Migration
      */
     public function up()
     {
-        Schema::table('comment_thumbs', function (Blueprint $table) {
-            
+        Schema::table('thumbs', function (Blueprint $table) {
+            $table->dropColumn('type');
         });
     }
 
@@ -25,7 +25,7 @@ class AddPostIdToCommentThumbTable extends Migration
      */
     public function down()
     {
-        Schema::table('comment_thumb', function (Blueprint $table) {
+        Schema::table('thumbs', function (Blueprint $table) {
             //
         });
     }

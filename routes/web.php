@@ -13,9 +13,7 @@
 
 //Authenticate
 
-use App\Http\Controllers\CommentController;
-use App\Post;
-use App\Comment;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -23,32 +21,40 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-Route::get('/', function () {
-    $posts= Post::orderBy('created_at','desc')->with(['comments' => function($query) {
-        $query->with('comments_thumbs');
-    }],'thumbs')->get();
-    return view('welcome', compact('posts'));
-})->name('dashboard');
+//DASHBOARD ROUTE
+Route::get('/','HomeController@index')->name('dashboard');
 
-
-
-Route::get('/post', 'PostController@index')->name('post_question')->middleware('verified');
-Route::get('/post/{post}','PostController@show')->name('show')->middleware('verified');
-Route::post('/post','PostController@create')->middleware('verified');
-Route::patch('/post/update/{post}','PostController@update')->name('update')->middleware('verified');
+//POST DELETE ROUTE
 Route::delete('/delete/{post}','PostController@delete')->name('delete')->middleware(['verifiedToDelete']);
 
-Route::post('/comment','CommentController@create')->name('create')->middleware('verified');
-Route::post('/comment/update','CommentController@update')->name('updateComment')->middleware('verified');
+//COMMENT DELETE ROUTE
 Route::delete('/comment/{comment}','CommentController@delete')->name('deleteComment')->middleware('verified');
 
-Route::post('/post/thumb','PostThumbsController@thumb')->name('postThumb')->middleware('verified');
-Route::post('/comment/thumb','CommentThumbsController@thumb')->name('commentThumb')->middleware('verified');
+
 
 
 
 Auth::routes(['verify'=>true]);
+
+//VERIFIED MIDDLEWARE
 Route::middleware(['verified'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
-    //
+
+    // POST ROUTES
+    Route::get('/post', 'PostController@index')->name('post_question');
+    Route::get('/post/{post}','PostController@show')->name('show');
+    Route::post('/post','PostController@create');
+    Route::patch('/post/update/{post}','PostController@update')->name('update');
+    
+    
+    //COMMENT ROUTES
+    Route::post('/comment','CommentController@create')->name('create');
+    Route::post('/comment/update','CommentController@update')->name('updateComment');
+
+    //ThumbController
+    Route::post('/post/thumb','PostThumbsController@thumb')->name('postThumb');
+    Route::post('/comment/thumb','CommentThumbsController@thumb')->name('commentThumb');
+
+    Route::post('/thumb','ThumbController@thumb')->name('thumb');
+
 });

@@ -13,13 +13,8 @@ class CommentThumbsController extends Controller
         $new_data = [
             'comment_id' => $request->comment_id,
             'user_id' => auth()->user()->id,
+            'up_down'=> $request->thumb,
         ];
-
-        if ($request->thumb === 'up') {
-            $new_data['up_down'] = 'up';
-        } else {
-            $new_data['up_down'] = 'down';
-        }
 
         CommentThumb::updateOrCreate([
             'comment_id' => $request->comment_id,

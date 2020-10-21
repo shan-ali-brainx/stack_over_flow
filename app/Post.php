@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
@@ -16,6 +17,19 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
     public function thumbs(){
-        return $this->hasMany(PostThumb::class);
+        return $this->hasMany(Thumb::class);
+    }
+
+    public function thumbsCount(){
+        return $this->hasMany(Thumb::class);
+    }
+
+    public function thumbsUp(){
+        return $this->hasMany(Thumb::class)->where('up_down',1);
+
+    }
+    public function thumbsDown(){
+        return $this->hasMany(Thumb::class)->where('up_down',0);
+
     }
 }

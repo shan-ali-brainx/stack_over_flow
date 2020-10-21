@@ -14,7 +14,13 @@ class Comment extends Model
         return $this->belongsTo(Post::class);
     }
     public function comments_thumbs(){
-        return $this->hasMany(CommentThumb::class);
+        return $this->hasMany(Thumb::class);
+    }
+    public function thumbsUp(){
+        return $this->hasMany(Thumb::class)->where('up_down',1);
+    }
+    public function thumbsDown(){
+        return $this->hasMany(Thumb::class)->where('up_down',0);
     }
     
 }

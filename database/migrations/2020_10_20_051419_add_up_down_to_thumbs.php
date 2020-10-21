@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUpDownBitToCommentThumbs extends Migration
+class AddUpDownToThumbs extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddUpDownBitToCommentThumbs extends Migration
      */
     public function up()
     {
-        Schema::table('comment_thumbs', function (Blueprint $table) {
+        Schema::table('thumbs', function (Blueprint $table) {
             //
-            $table->string('up_down');
+            $table->integer('up_down');
         });
     }
 
@@ -26,7 +26,7 @@ class AddUpDownBitToCommentThumbs extends Migration
      */
     public function down()
     {
-        Schema::table('comment_thumbs', function (Blueprint $table) {
+        Schema::table('thumbs', function (Blueprint $table) {
             //
         });
     }

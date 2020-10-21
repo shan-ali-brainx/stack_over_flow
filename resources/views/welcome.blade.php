@@ -32,6 +32,7 @@
                 <a href="{{ route('post_question')}}">Post</a>
             </div>
             @endif
+           
 
             <div class="container">
                 @foreach($posts as $post)
@@ -48,7 +49,7 @@
                                                         <a class="postUp postUp{{$post->id}}" javascript(0) ><li class="fa fa-caret-up fa-2x block"></li></a>
                                                 </div>
                                                 <div>
-                                                    <span class="block postCommentCount">{{count($post->thumbs->where('up_down', 'up'))-count($post->thumbs->where('up_down', 'down'))}}</span>
+                                                    <span class="block postCommentCount">{{$post->thumbs_up_count -$post->thumbs_down_count }}</span>
                                                 </div>
                                                 <div>
                                                         <a class="postDown postDown{{$post->id}}" javascript(0)  ><li class="fa fa-caret-down fa-2x block"></li></a>
@@ -80,7 +81,7 @@
                                                         <a class="commentUp commentUp{{$commentshow->id}}" javascript(0) ><li class="fa fa-caret-up fa"></li></a>
                                                     </div>
                                                     <div>
-                                                        <span class="block commentThumbsCount">{{count($commentshow->comments_thumbs->where('up_down', 'up'))-count($commentshow->comments_thumbs->where('up_down', 'down'))}}</span>
+                                                        <span class="block commentThumbsCount">{{$commentshow->thumbs_up_count - $commentshow->thumbs_down_count }}</span>
                                                     </div>
                                                     <div>
                                                     <a class="commentDown commentDown{{$commentshow->id}}" javascript(0) ><li class="fa fa-caret-down fa"></li></a>
@@ -144,15 +145,18 @@
 
                 $.ajax({
                     type:'POST',
-                    url:'/comment/thumb',
+                    url:'/thumb',
                     data: {
                         comment_id: ref.attr('class').split(' ')[1].slice(9),
-                        thumb: 'up',
+                        up_down: "{{ config('constant.UP') }}",
+                        post_id:null,
+                        type:'comment'
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success:function(data) {
+                        console.log(data);
                         ref.closest('.container').find('.commentThumbsCount').html(data);    
                     }
                 });
@@ -162,15 +166,18 @@
                 var ref = $(this);
                 $.ajax({
                     type:'POST',
-                    url:'/comment/thumb',
+                    url:'/thumb',
                     data: {
                         comment_id: ref.attr('class').split(' ')[1].slice(11),
-                        thumb: 'down',
+                        up_down: "{{ config('constant.DOWN') }}",
+                        post_id:null,
+                        type:'comment'
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success:function(data) {
+                        console.log(data);
                         ref.closest('.container').find('.commentThumbsCount').html(data);    
                     }
                 }); 
@@ -180,15 +187,18 @@
                 var ref = $(this);
                 $.ajax({
                     type:'POST',
-                    url:'/post/thumb',
+                    url:'/thumb',
                     data: {
                         post_id: $(this).attr('class').split(' ')[1].slice(6),
-                        thumb: 'up',
+                        up_down: "{{ config('constant.UP') }}",
+                        comment_id:null,
+                        type:'post'
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success:function(data) {
+                        console.log(data);
                         ref.closest('.container').find('.postCommentCount').html(data);    
                     }
                 });
@@ -198,10 +208,12 @@
                 var ref = $(this);
                 $.ajax({
                     type:'POST',
-                    url:'/post/thumb',
+                    url:'/thumb',
                     data: {
                         post_id: $(this).attr('class').split(' ')[1].slice(8),
-                        thumb: 'down',
+                        up_down: "{{ config('constant.DOWN')}}",
+                        comment_id:null,
+                        type:'post'
                     },
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

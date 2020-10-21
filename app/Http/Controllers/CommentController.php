@@ -14,8 +14,9 @@ class CommentController extends Controller
 
     public function create(Request $request){
         $input = $request->only(['discription','post_id']);
-        $validator = Validator::make($request->all(),[
+        $validator = $request->validate([
             'discription' => 'required',
+            'post_id'=> 'exists:posts,id'
         ]);
 
         $input['user_id']=auth()->user()->id;
